@@ -1,0 +1,74 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "user" %>
+<% end %>
+
+<% content_for :heading do %>
+  <h1><%= t ".heading" %></h1>
+  <div class='header-illustration new-user-terms'></div>
+<% end %>
+
+<%= form_tag({ :action => "save" }, { :class => "standard-form fillL" }) do %>
+  <!-- legale is <%= @legale %> -->
+  <p class="text-muted"><%= t ".read and accept with tou" %></p>
+  <h4>
+    <%= t ".heading_ct" %>
+  </h4>
+  <div class='standard-form-row horizontal-list clearfix'>
+    <p class="text-muted"><%= t ".contributor_terms_explain" %></p>
+    <label class="standard-label">
+      <%= t ".legale_select" %>
+    </label>
+
+    <% [%w[france FR], %w[italy IT], %w[rest_of_world GB]].each do |name, legale| %>
+      <div class="standard-form-row">
+        <label for="legale_<%= legale %>">
+          <%= radio_button_tag "legale", legale, @legale == legale, :data => { :url => url_for(:legale => legale) } %>
+          <%= t(".legale_names." + name) %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="contributorTerms" class="legale">
+    <%= render :partial => "terms" %>
+  </div>
+
+  <div>
+    <p id="contributorGuidance" class="text-muted">
+      <%= t ".guidance_html",
+            :summary => "https://www.osmfoundation.org/wiki/License/Contributor_Terms_Summary",
+            :translations => "https://www.osmfoundation.org/wiki/License/Contributor_Terms/Informal_Translations" %>
+    </p>
+  </div>
+  <div class="standard-form-row">
+    <label for="read_ct">
+      <%= check_box_tag "read_ct" %>
+      <%= t ".read_ct" %>
+    </label>
+  </div>
+
+  <h4>
+    <%= t "layouts.tou" %>
+  </h4>
+  <p class="text-muted"><%= t ".tou_explain_html", :tou_link => link_to(t("layouts.tou"), "https://wiki.osmfoundation.org/wiki/Terms_of_Use", :target => :new) %></p>
+  <div class="standard-form-row">
+    <label for="read_tou">
+      <%= check_box_tag "read_tou" %>
+      <%= t ".read_tou" %>
+    </label>
+
+    <%= hidden_field_tag("referer", h(params[:referer])) unless params[:referer].nil? %>
+
+    <div class="buttons standard-form-row py-3 clearfix">
+      <%= submit_tag("Continue", :name => "continue", :id => "continue", :disabled => true) %>
+      <%= submit_tag("Cancel", :name => "decline", :id => "decline") %>
+    </div>
+
+    <label for="user_consider_pd">
+      <%= check_box("user", "consider_pd") %>
+      <%= t ".consider_pd" %>
+    </label>
+    <span class="minorNote">(<%= link_to(t(".consider_pd_why"), t(".consider_pd_why_url"), :target => :new) %>)</span>
+
+  </div>
+<% end %>

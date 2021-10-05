@@ -1,0 +1,19 @@
+<% if @results.empty? %>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <%= t ".no_results" %>
+    </li>
+  </ul>
+<% else %>
+  <ul class='results-list list-group list-group-flush'>
+    <% @results.each do |result| %>
+      <li class="list-group-item search_results_entry"><%= result_to_html(result) %></li>
+    <% end %>
+  </ul>
+  <% if @more_params %>
+    <div class="search_more">
+      <%= link_to t(".more_results"), url_for(@more_params), :class => "button load_more" %>
+      <div class="loader"><%= image_tag "searching.gif" %></div>
+    </div>
+  <% end %>
+<% end %>

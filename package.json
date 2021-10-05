@@ -1,0 +1,8 @@
+{
+  "name": "openstreetmap",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.3.1"
+  }
+}

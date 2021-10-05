@@ -1,0 +1,24 @@
+<% @title = t(".title") %>
+<% content_for :heading do %>
+  <h1><%= t(".heading", :title => @redaction.title) %></h1>
+<% end %>
+
+<p>
+  <b><%= t ".user" %></b>
+  <%= link_to(@redaction.user.display_name, user_path(@redaction.user)) %>
+</p>
+<div class="richtext">
+  <b><%= t ".description" %></b>
+  <%= @redaction.description.to_html %>
+</div>
+
+<% if can?(:edit, Redaction) || can?(:destroy, Redaction) %>
+<div class="buttons">
+  <% if can?(:edit, Redaction) %>
+    <%= button_to t(".edit"), edit_redaction_path(@redaction), :method => :get %></td>
+  <% end %>
+  <% if can?(:destroy, Redaction) %>
+    <%= button_to t(".destroy"), @redaction, :method => "delete", :remote => true, :data => { :confirm => t(".confirm") } %>
+  <% end %>
+</div>
+<% end %>
